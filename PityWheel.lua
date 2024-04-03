@@ -25,7 +25,7 @@ local config = {
 	-- Both options reset all data whenever balatro.exe launches and do not reset
 	-- even if you start a new game, etc. -- I'm not really interested in exploring
 	-- the save system to see if that can be done.
-	enable_pity = false,
+	enable_pity = true,
 
 	-- Configure the maximum number of failures before Wheel of Fortune succeeds.
 	-- Wheel of Fortune cannot fail more than (force_one_in_this_many - 1) times in a row.
@@ -127,7 +127,7 @@ function Card:use_consumeable(area, copier)
 
 	if show_pity then
 		local used_tarot = copier or self
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.8, func = function()
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
 			attention_text({
 					text = "That was pity!",
 					scale = 1.3, 
@@ -144,5 +144,6 @@ function Card:use_consumeable(area, copier)
 			play_sound('tarot1', 1, 0.4)
 			used_tarot:juice_up(0.3, 0.5)
 		return true end }))
+		delay(0.6)
 	end
 end
