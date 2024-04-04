@@ -2,7 +2,7 @@
 
 This mod for Balatro will either:
 
-- Track your Nope! rate for The Wheel of Fortune, adding metrics to the card display
+- Track your Nope! rate for The Wheel of Fortune, adding metrics to the card display, or
 - Guarantee the "1 in 4" success rate for The Wheel of Fortune, such that The Wheel cannot Nope! you more than 3 times in a row
 
 The metrics reset when Balatro.exe launches and aren't saved. Starting a new game will not affect the tracker.
