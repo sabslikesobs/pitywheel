@@ -15,7 +15,7 @@ Guarantee mode:
 
 ![freebie](freebie.png)
 
-Refer to [PityWheel.lua](pitywheel.lua) for configuration details and usage hints.
+Refer to [PityWheel.lua](PityWheel.lua) for configuration details and usage hints.
 
 ## Installation
 
