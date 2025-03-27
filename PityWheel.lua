@@ -52,9 +52,9 @@ local pity = {
 function write(total_rolls, successful_rolls)
 	local f = assert(io.open("wheel_save.txt", "w"))
 	f:write(total_rolls.. "", "\n")
-	print ("wrote " .. total_rolls)
+	--print ("wrote " .. total_rolls)
 	f:write(successful_rolls.. "", "\n")
-	print ("wrote " .. successful_rolls)
+	--print ("wrote " .. successful_rolls)
 	f:close()
 end
 
@@ -135,7 +135,7 @@ function pseudorandom(seed, min, max)
 			pity.sequential_failed_rolls = pity.sequential_failed_rolls + 1
 		end
 	end
-	print("Total rolls: " .. pity.total_rolls .. ", successful rolls: " .. pity.successful_rolls)
+	-- print("Total rolls: " .. pity.total_rolls .. ", successful rolls: " .. pity.successful_rolls)
 	write(pity.total_rolls, pity.successful_rolls)
 	return actual
 end
