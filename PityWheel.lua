@@ -14,6 +14,7 @@
 -- and you can use that to test repeating behavior. You can return to the main
 -- menu repeatedly to increment the metrics without losing game state.
 
+
 local config = {
 	-- If true, force Wheel of Fortune to succeed based on force_one_in_this_many.
 	-- Data is not tracked within each game save, so if you want to cheat, you can
@@ -25,7 +26,7 @@ local config = {
 	-- Both options reset all data whenever balatro.exe launches and do not reset
 	-- even if you start a new game, etc. -- I'm not really interested in exploring
 	-- the save system to see if that can be done.
-	enable_pity = true,
+	enable_pity = false,
 
 	-- Configure the maximum number of failures before Wheel of Fortune succeeds.
 	-- Wheel of Fortune cannot fail more than (force_one_in_this_many - 1) times in a row.
@@ -39,12 +40,33 @@ local config = {
 	force_one_in_this_many = G.P_CENTERS.c_wheel_of_fortune.config.extra,
 }
 
+
 -- Tracking data
 local pity = {
 	sequential_failed_rolls = 0,
 	total_rolls = 0,
 	successful_rolls = 0,
 }
+
+-- Saves the tracking data to a file. 
+function write(total_rolls, successful_rolls)
+	local f = assert(io.open("wheel_save.txt", "w"))
+	f:write(total_rolls.. "", "\n")
+	print ("wrote " .. total_rolls)
+	f:write(successful_rolls.. "", "\n")
+	print ("wrote " .. successful_rolls)
+	f:close()
+end
+
+-- Reads the tracking data from a file.
+function read()
+	local f = assert(io.open("wheel_save.txt", "r"))
+	pity.total_rolls = f:read("*line")
+	--print (pity.total_rolls.. "")
+	pity.successful_rolls = f:read("*line")
+	--print (pity.successful_rolls.. "")
+	f:close()
+end
 
 -- Update Wheel of Fortune description with a slot for this mod's custom message.
 -- Each description has styling and variable slots to insert current game state.
@@ -67,6 +89,7 @@ desc[#desc+1] = "{C:inactive}#3#"
 local original_localize = localize
 function localize(args, misc_cat)
 	-- args.key turns out to be the unique card identifier, but I guessed that was true
+	read()
 	if args.type == "descriptions" and args.key == "c_wheel_of_fortune" then
 		-- I update this every time just in case G.GAME.probabilities.normal has changed lately
 		local actual_force_one_in_this_many = math.max(math.floor(config.force_one_in_this_many / G.GAME.probabilities.normal), 1)
@@ -96,6 +119,7 @@ end
 -- See pseudorandom('wheel_of_fortune') in Card:use_consumeable in card.lua.
 local original_pseudorandom = pseudorandom
 function pseudorandom(seed, min, max)
+	read()
 	local actual = original_pseudorandom(seed, min, max)
 	if seed == 'wheel_of_fortune' then
 		-- I update this every time just in case G.GAME.probabilities.normal has changed lately
@@ -111,6 +135,8 @@ function pseudorandom(seed, min, max)
 			pity.sequential_failed_rolls = pity.sequential_failed_rolls + 1
 		end
 	end
+	print("Total rolls: " .. pity.total_rolls .. ", successful rolls: " .. pity.successful_rolls)
+	write(pity.total_rolls, pity.successful_rolls)
 	return actual
 end
 
@@ -147,3 +173,4 @@ function Card:use_consumeable(area, copier)
 		delay(0.6)
 	end
 end
+
