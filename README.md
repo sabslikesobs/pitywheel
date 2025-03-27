@@ -22,3 +22,6 @@ Refer to [PityWheel.lua](PityWheel.lua) for configuration details and usage hint
 1. Install [Steammodded](https://github.com/Steamopollys/steamodded)
 2. Put PityWheel.lua into your Mods folder
 3. Modify the config section at the top of PityWheel.lua according to your preferences
+
+Alternatively, If you want the wheel stats to be saved between game sessions, download PityWheel.lua and wheel_save.txt from https://github.com/Norad74/pitywheel. Put PityWheel.lua in your mods folder and wheel_save.txt to your %appdata%/Balatro folder
+
